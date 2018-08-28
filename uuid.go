@@ -34,7 +34,7 @@ func FromString(s string) (UUID, error) {
 	return parseBytes([]byte(s))
 }
 
-// Generate generates an UUID (or GUID) according to the RFC-4122.
+// Generate generates a UUID (or GUID) according to the RFC-4122.
 func Generate(v Version) (guid UUID, err error) {
 	switch v {
 	case Version4:
