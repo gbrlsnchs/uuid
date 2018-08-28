@@ -29,8 +29,8 @@ var (
 // UUID is a 16-byte array Universally Unique IDentifier, as per the RFC 4122.
 type UUID [byteSize]byte
 
-// FromString parses a UUID 36-byte string encoded in hexadecimal and converts it to a 16-byte array.
-func FromString(s string) (UUID, error) {
+// Parse parses a UUID 36-byte string encoded in hexadecimal and converts it to a 16-byte array.
+func Parse(s string) (UUID, error) {
 	return parseBytes([]byte(s))
 }
 
