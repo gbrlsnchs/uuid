@@ -87,6 +87,16 @@ func (guid UUID) Bytes() []byte {
 	return guid[:]
 }
 
+// GUID returns a 36-byte string with surrounding curly braces.
+func (guid UUID) GUID() string {
+	var microsoft [guidSize]byte
+	last := len(microsoft) - 1
+	microsoft[0] = '{'
+	microsoft[last] = '}'
+	guid.encode(microsoft[1:last])
+	return guid.str(microsoft[:])
+}
+
 // IsNull returns whether the UUID is a null UUID.
 func (guid UUID) IsNull() bool {
 	return guid == Null
@@ -108,16 +118,6 @@ func (guid UUID) MarshalText() ([]byte, error) {
 	b := xid[:]
 	guid.encode(b)
 	return b, nil // 36-byte hex-encoded slice
-}
-
-// GUID returns a 36-byte string with surrounding curly braces.
-func (guid UUID) GUID() string {
-	var microsoft [guidSize]byte
-	last := len(microsoft) - 1
-	microsoft[0] = '{'
-	microsoft[last] = '}'
-	guid.encode(microsoft[1:last])
-	return guid.str(microsoft[:])
 }
 
 // String converts the 16-byte UUID to a 36-byte string encoded in hexadecimal.
