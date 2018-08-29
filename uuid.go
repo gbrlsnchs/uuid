@@ -126,7 +126,7 @@ func (guid UUID) String() string {
 	return guid.str(b)
 }
 
-// UnmarshalBinary implements binary unmarshalling.
+// UnmarshalBinary implements binary unmarshaling.
 func (guid *UUID) UnmarshalBinary(b []byte) error {
 	if len(b) != byteSize {
 		return ErrInvalidUUID
@@ -135,12 +135,12 @@ func (guid *UUID) UnmarshalBinary(b []byte) error {
 	return nil
 }
 
-// UnmarshalJSON implements JSON unmarshalling.
+// UnmarshalJSON implements JSON unmarshaling.
 func (guid *UUID) UnmarshalJSON(b []byte) error {
 	return guid.UnmarshalText(b)
 }
 
-// UnmarshalText implements text unmarshalling.
+// UnmarshalText implements text unmarshaling.
 func (guid *UUID) UnmarshalText(b []byte) error {
 	u, err := parseBytes(b)
 	if err != nil {
@@ -150,7 +150,7 @@ func (guid *UUID) UnmarshalText(b []byte) error {
 	return nil
 }
 
-// URN returns the UUID as string conformed to the RFC-2141.
+// URN returns the UUID as string conformed to RFC 2141.
 func (guid UUID) URN() string {
 	var urn [urnSize]byte
 	b := urn[:]
