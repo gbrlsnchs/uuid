@@ -5,7 +5,7 @@
 ## About
 This package is a UUID (or GUID) generator for [Go]. It's still under development.
 
-Supported versions:
+### Supported versions:
 | Version | Supported          |
 |:-------:|:------------------:|
 | 1       | :x:                |
