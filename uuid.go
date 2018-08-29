@@ -102,17 +102,17 @@ func (guid UUID) IsNull() bool {
 	return guid == Null
 }
 
-// MarshalBinary implements binary marshalling.
+// MarshalBinary implements binary marshaling.
 func (guid UUID) MarshalBinary() ([]byte, error) {
 	return guid.Bytes(), nil // 16-byte array
 }
 
-// MarshalJSON implements JSON marshalling.
+// MarshalJSON implements JSON marshaling.
 func (guid UUID) MarshalJSON() ([]byte, error) {
 	return json.Marshal(guid.String()) // 36-byte hex-encoded string
 }
 
-// MarshalText implements text marshalling.
+// MarshalText implements text marshaling.
 func (guid UUID) MarshalText() ([]byte, error) {
 	var xid [hexSize]byte
 	b := xid[:]
