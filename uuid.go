@@ -33,24 +33,6 @@ func Parse(s string) (UUID, error) {
 	return parseBytes([]byte(s))
 }
 
-// Generate generates a UUID (or GUID) according to the RFC 4122.
-func Generate(v Version) (guid UUID, err error) {
-	switch v {
-	case Version1:
-		guid, err = generateV1()
-	case Version4:
-		guid, err = generateV4()
-	default:
-		return Null, ErrUnsupportedVersion
-	}
-	if err != nil {
-		return Null, err
-	}
-	guid.setVersion(v)
-	guid.setVariant(VariantRFC4122)
-	return guid, nil
-}
-
 func parseBytes(b []byte) (UUID, error) {
 	if len(b) != hexSize {
 		if len(b) != urnSize {
@@ -86,26 +68,6 @@ func parseBytes(b []byte) (UUID, error) {
 // Bytes returns the UUID as a 16-byte slice.
 func (guid UUID) Bytes() []byte {
 	return guid[:]
-}
-
-// Generate generates a new UUID using the current UUID as namespace.
-// This method only supports versions 3 and 5, otherwise it errors.
-func (guid UUID) Generate(v Version, data []byte) (UUID, error) {
-	var err error
-	switch v {
-	case Version3:
-		guid, err = generateV3(guid, data)
-	case Version5:
-		guid, err = generateV5(guid, data)
-	default:
-		return Null, ErrUnsupportedVersion
-	}
-	if err != nil {
-		return Null, err
-	}
-	guid.setVersion(v)
-	guid.setVariant(VariantRFC4122)
-	return guid, nil
 }
 
 // GUID returns a 36-byte string with surrounding curly braces.
@@ -203,13 +165,10 @@ func (guid UUID) encode(dst []byte) {
 	hex.Encode(dst[24:], guid[10:])
 }
 
-func (guid *UUID) setVariant(v Variant) {
-	// Clear the 2 most significant bits and set variant.
-	// As the RFC 4122 only takes into account 2 bits, the third most significant bit is ignored and thus not zeroed.
-	guid[variantByte] = guid[variantByte]&0x3F | byte(v) // (byte & 00111111) | 10000000
-}
-
 func (guid *UUID) setVersion(v Version) {
 	// Clear the 4 most significant bits and set version.
 	guid[versionByte] = guid[versionByte]&0x0F | byte(v) // (byte & 00001111) | 01000000
+	// Clear the 2 most significant bits and set variant.
+	// As the RFC 4122 only takes into account 2 bits, the third most significant bit is ignored and thus not zeroed.
+	guid[variantByte] = guid[variantByte]&0x3F | byte(VariantRFC4122) // (byte & 00111111) | 10000000
 }

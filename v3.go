@@ -4,6 +4,7 @@ import (
 	"crypto/md5"
 )
 
-func generateV3(nspace UUID, data []byte) (UUID, error) {
-	return hashUUID(md5.New(), nspace, data)
+// V3 generates a version 3 UUID based on a namespace UUID and additional data.
+func V3(nspace UUID, data []byte) (UUID, error) {
+	return hashUUID(md5.New(), nspace, data, Version3)
 }
