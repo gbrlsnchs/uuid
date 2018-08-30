@@ -22,9 +22,10 @@ func generateV1() (UUID, error) {
 	diff := now + int64(sec100ns)      // how many 100s of nanoseconds elapsed since Oct 15 1582
 	var guid UUID
 	// 32 least significant bits (guid[:4]).
-	timeLow := uint32(diff & 0xFFFFFFFF) // (diff & 0xFFFFFFFF) converts the 32 LSBs to a uint32
+	// Convert the 32 LSBs to a uint32.
+	timeLow := uint32(diff & 0xFFFFFFFF)
 	// Next 16 least significant bits (guid[4:6]).
-	// Clear the 32 LSBs from time low and converts it to a uint16.
+	// Clear the 32 LSBs from time low and convert it to a uint16.
 	timeMid := uint16(diff >> 32 & 0xFFFF)
 	// Next 16 least significant bits (guid[6:8]).
 	// Clear the 48 LSBs from both time low and time mid and convert it to a unit16,
