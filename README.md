@@ -10,9 +10,9 @@ This package is a UUID (or GUID) generator for [Go]. It's still under developmen
 |:-------:|:------------------:|
 | 1       | :heavy_check_mark: |
 | 2       | :x:                |
-| 3       | :x:                |
+| 3       | :heavy_check_mark: |
 | 4       | :heavy_check_mark: |
-| 5       | :x:                |
+| 5       | :heavy_check_mark: |
 
 ## Usage
 Full documentation [here] (work in progress).
