@@ -6,8 +6,8 @@ type Variant byte
 const (
 	// VariantNCS is a reserved variant for NCS backward compatibility.
 	VariantNCS Variant = 0x00
-	// VariantRFC is the current variant defined by the RFC 4122.
-	VariantRFC Variant = 0x80 // 10xxxxxx
+	// VariantRFC4122 is the current variant defined by the RFC 4122.
+	VariantRFC4122 Variant = 0x80 // 10xxxxxx
 	// VariantMicrosoft is a reserved variant for Microsoft Corporation backward compatibility.
 	VariantMicrosoft Variant = 0xC0 // 110xxxxx
 	// VariantUndefined is a reserved variant for future definition (still undefined).
@@ -17,7 +17,7 @@ const (
 
 func (v Variant) String() string {
 	switch {
-	case v&VariantRFC > 0:
+	case v&VariantRFC4122 > 0:
 		return "RFC 4122"
 	case v&VariantMicrosoft > 0:
 		return "Microsoft"
