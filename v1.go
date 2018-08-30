@@ -5,7 +5,6 @@ import (
 	"encoding/binary"
 	"errors"
 	"io"
-	"log"
 	"net"
 	"time"
 )
@@ -21,7 +20,6 @@ const (
 func generateV1() (UUID, error) {
 	now := time.Now().UnixNano() / 100 // how many 100s of nanoseconds elapsed since Unix Epoch
 	diff := now + int64(sec100ns)      // how many 100s of nanoseconds elapsed since Oct 15 1582
-	log.Print(diff)
 	var guid UUID
 	// 32 least significant bits (guid[:4]).
 	timeLow := uint32(diff & 0xFFFFFFFF) // (diff & 0xFFFFFFFF) converts the 32 LSBs to a uint32
