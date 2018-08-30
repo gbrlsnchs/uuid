@@ -145,7 +145,17 @@ func (guid UUID) URN() string {
 
 // Variant parses the variant from the UUID.
 func (guid UUID) Variant() Variant {
-	return Variant(guid[variantByte] & 0xE0) // byte & 11100000
+	v := Variant(guid[variantByte] & 0xE0) // byte & 11100000
+	switch {
+	case v&VariantRFC4122 > 0:
+		return VariantRFC4122
+	case v&VariantMicrosoft > 0:
+		return VariantMicrosoft
+	case v&VariantUndefined > 0:
+		return VariantUndefined
+	default:
+		return VariantNCS
+	}
 }
 
 // Version extracts the version from the UUID.

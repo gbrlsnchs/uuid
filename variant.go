@@ -16,14 +16,14 @@ const (
 )
 
 func (v Variant) String() string {
-	switch {
-	case v&VariantNCS > 0:
+	switch v {
+	case VariantNCS:
 		return "NCS"
-	case v&VariantRFC4122 > 0:
+	case VariantRFC4122:
 		return "RFC 4122"
-	case v&VariantMicrosoft > 0:
+	case VariantMicrosoft:
 		return "Microsoft"
-	case v&VariantUndefined > 0:
+	case VariantUndefined:
 		return "Undefined"
 	default:
 		return "No variant"
