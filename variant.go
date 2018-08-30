@@ -17,6 +17,8 @@ const (
 
 func (v Variant) String() string {
 	switch {
+	case v&VariantNCS > 0:
+		return "NCS"
 	case v&VariantRFC4122 > 0:
 		return "RFC 4122"
 	case v&VariantMicrosoft > 0:
@@ -24,6 +26,6 @@ func (v Variant) String() string {
 	case v&VariantUndefined > 0:
 		return "Undefined"
 	default:
-		return "NCS"
+		return "No variant"
 	}
 }
