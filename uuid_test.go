@@ -68,6 +68,9 @@ func TestUUID(t *testing.T) {
 				if want, got := tc.version, guid.Version(); want != got {
 					t.Errorf("want %s, got %s", want.String(), got.String())
 				}
+				if want, got := VariantRFC4122, guid.Variant()&0xC0; want != got { // filter only the MS 2 bits of variant
+					t.Errorf("want %s, got %s", want.String(), got.String())
+				}
 				if want, got := true, regex.MatchString(guid.String()); want != got {
 					t.Errorf("want %t, got %t", want, got)
 				}
