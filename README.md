@@ -9,7 +9,7 @@ This package is a UUID (or GUID) generator for [Go]. It's still under developmen
 | Version | Supported          |
 |:-------:|:------------------:|
 | 1       | :heavy_check_mark: |
-| 2       | :x:                |
+| 2       | :heavy_check_mark: |
 | 3       | :heavy_check_mark: |
 | 4       | :heavy_check_mark: |
 | 5       | :heavy_check_mark: |
