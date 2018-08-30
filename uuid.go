@@ -5,7 +5,6 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"errors"
-	"unsafe"
 )
 
 const (
@@ -37,6 +36,8 @@ func Parse(s string) (UUID, error) {
 // Generate generates a UUID (or GUID) according to the RFC 4122.
 func Generate(v Version) (guid UUID, err error) {
 	switch v {
+	case Version1:
+		guid, err = generateV1()
 	case Version4:
 		guid, err = generateV4()
 	default:
@@ -45,7 +46,10 @@ func Generate(v Version) (guid UUID, err error) {
 	if err != nil {
 		return Null, err
 	}
-	guid[versionByte] = guid[versionByte]&0x0F | byte(v)          // (byte & 00001111) | 01000000
+	// Clear the 4 most significant bits and set version.
+	guid[versionByte] = guid[versionByte]&0x0F | byte(v) // (byte & 00001111) | 01000000
+	// Clear the 2 most significant bits and set variant.
+	// As the RFC 4122 only takes into account 2 bits, the third most significant bit is ignored and thus not zeroed.
 	guid[variantByte] = guid[variantByte]&0x3F | byte(VariantRFC) // (byte & 00111111) | 10000000
 	return guid, nil
 }
@@ -94,7 +98,8 @@ func (guid UUID) GUID() string {
 	microsoft[0] = '{'
 	microsoft[last] = '}'
 	guid.encode(microsoft[1:last])
-	return guid.str(microsoft[:])
+	b := microsoft[:]
+	return unsafeStr(&b)
 }
 
 // IsNull returns whether the UUID is a null UUID.
@@ -123,7 +128,7 @@ func (guid UUID) MarshalText() ([]byte, error) {
 // String converts the 16-byte UUID to a 36-byte string encoded in hexadecimal.
 func (guid UUID) String() string {
 	b, _ := guid.MarshalText()
-	return guid.str(b)
+	return unsafeStr(&b)
 }
 
 // UnmarshalBinary implements binary unmarshaling.
@@ -156,7 +161,7 @@ func (guid UUID) URN() string {
 	b := urn[:]
 	copy(b, "urn:uuid:")
 	guid.encode(b[urnOffset:])
-	return guid.str(b)
+	return unsafeStr(&b)
 }
 
 // Variant parses the variant from the UUID.
@@ -179,8 +184,4 @@ func (guid UUID) encode(dst []byte) {
 	hex.Encode(dst[19:23], guid[8:10])
 	dst[23] = '-'
 	hex.Encode(dst[24:], guid[10:])
-}
-
-func (guid UUID) str(b []byte) string {
-	return *(*string)(unsafe.Pointer(&b))
 }

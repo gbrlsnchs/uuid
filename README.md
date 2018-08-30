@@ -8,7 +8,7 @@ This package is a UUID (or GUID) generator for [Go]. It's still under developmen
 ### Supported versions:
 | Version | Supported          |
 |:-------:|:------------------:|
-| 1       | :x:                |
+| 1       | :heavy_check_mark: |
 | 2       | :x:                |
 | 3       | :x:                |
 | 4       | :heavy_check_mark: |
