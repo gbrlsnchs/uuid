@@ -28,7 +28,9 @@ func (v Version) String() string {
 		return "V3"
 	case Version4:
 		return "V4"
-	default:
+	case Version5:
 		return "V5"
+	default:
+		return "No version"
 	}
 }
