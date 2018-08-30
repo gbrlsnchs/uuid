@@ -20,7 +20,7 @@ Full documentation [here] (work in progress).
 ## Example
 ### Generating UUIDs
 ```go
-guid, err := uuid.Generate(uuid.Version4)
+guid, err := uuid.V4()
 if err != nil {
 	// handle error
 }
