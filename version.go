@@ -4,8 +4,9 @@ package uuid
 type Version byte
 
 const (
+	VersionNone Version = iota
 	// Version1 is the version 1 of the UUID implementation.
-	Version1 Version = (iota + 1) << 4
+	Version1 Version = iota << 4
 	// Version2 is the version 2 of the UUID implementation.
 	Version2
 	// Version3 is the version 3 of the UUID implementation.
@@ -21,15 +22,15 @@ const (
 func (v Version) String() string {
 	switch v {
 	case Version1:
-		return "V1"
+		return "Version 1"
 	case Version2:
-		return "V2"
+		return "Version 2"
 	case Version3:
-		return "V3"
+		return "Version 3"
 	case Version4:
-		return "V4"
+		return "Version 4"
 	case Version5:
-		return "V5"
+		return "Version 5"
 	default:
 		return "No version"
 	}
