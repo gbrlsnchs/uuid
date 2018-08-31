@@ -16,7 +16,7 @@ const (
 	sec100ns = sec * (time.Second / 100) // epoch in 100s of nanoseconds
 )
 
-func timestampUUID() (UUID, error) {
+func timestampUUID(random bool) (UUID, error) {
 	now := time.Now().UnixNano() / 100 // how many 100s of nanoseconds elapsed since Unix Epoch
 	diff := now + int64(sec100ns)      // how many 100s of nanoseconds elapsed since Oct 15 1582
 	var guid UUID
@@ -33,9 +33,17 @@ func timestampUUID() (UUID, error) {
 	binary.BigEndian.PutUint32(guid[:4], timeLow)
 	binary.BigEndian.PutUint16(guid[4:6], timeMid)
 	binary.BigEndian.PutUint16(guid[6:8], timeHigh)
+	randomSize := 10
+	if random {
+		randomSize = len(guid)
+	}
 	// Clock sequence is 16 random bits (guid[8:10]).
-	if _, err := io.ReadFull(rand.Reader, guid[8:10]); err != nil {
+	_, err := io.ReadFull(rand.Reader, guid[8:randomSize])
+	if err != nil {
 		return Null, err
+	}
+	if random {
+		return guid, nil
 	}
 	mac, err := macAddr()
 	if err != nil {

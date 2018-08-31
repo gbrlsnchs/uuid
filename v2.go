@@ -8,8 +8,8 @@ import "encoding/binary"
 // the least significant 8 bits of the clock sequence by
 // the variable "ldn", a local domain name, and the least significant
 // 32 bits of the timestamp an integer identifier "id".
-func CreateV2(id uint32, ldn uint8) (UUID, error) {
-	guid, err := timestampUUID()
+func CreateV2(id uint32, ldn uint8, random bool) (UUID, error) {
+	guid, err := timestampUUID(random)
 	if err != nil {
 		return Null, err
 	}

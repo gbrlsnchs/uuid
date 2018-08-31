@@ -1,8 +1,8 @@
 package uuid
 
 // CreateV1 generates a version 1 UUID.
-func CreateV1() (UUID, error) {
-	guid, err := timestampUUID()
+func CreateV1(random bool) (UUID, error) {
+	guid, err := timestampUUID(random)
 	if err != nil {
 		return Null, err
 	}
