@@ -9,9 +9,12 @@ import (
 )
 
 func TestUUID(t *testing.T) {
-	regex, err := regexp.Compile("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")
-	if err != nil {
-		t.Fatal(err)
+	regexpMap := map[Version]*regexp.Regexp{
+		Version1: regexp.MustCompile("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-1[0-9a-fA-F]{3}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"),
+		Version2: regexp.MustCompile("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-2[0-9a-fA-F]{3}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"),
+		Version3: regexp.MustCompile("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-3[0-9a-fA-F]{3}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"),
+		Version4: regexp.MustCompile("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"),
+		Version5: regexp.MustCompile("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-5[0-9a-fA-F]{3}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"),
 	}
 	testCases := []struct {
 		version Version
@@ -20,7 +23,13 @@ func TestUUID(t *testing.T) {
 		{
 			Version1,
 			func() (UUID, error) {
-				return CreateV1()
+				return CreateV1(false)
+			},
+		},
+		{
+			Version1,
+			func() (UUID, error) {
+				return CreateV1(true)
 			},
 		},
 		{
@@ -28,7 +37,15 @@ func TestUUID(t *testing.T) {
 			func() (UUID, error) {
 				id := uint32(rand.Intn(int(^uint32(0))))
 				ldn := uint8(rand.Intn(int(^uint8(0))))
-				return CreateV2(id, ldn)
+				return CreateV2(id, ldn, false)
+			},
+		},
+		{
+			Version2,
+			func() (UUID, error) {
+				id := uint32(rand.Intn(int(^uint32(0))))
+				ldn := uint8(rand.Intn(int(^uint8(0))))
+				return CreateV2(id, ldn, true)
 			},
 		},
 		{
@@ -71,7 +88,7 @@ func TestUUID(t *testing.T) {
 				if want, got := VariantRFC4122, guid.Variant()&0xC0; want != got { // filter only the MS 2 bits of variant
 					t.Errorf("want %s, got %s", want.String(), got.String())
 				}
-				if want, got := true, regex.MatchString(guid.String()); want != got {
+				if want, got := true, regexpMap[guid.Version()].MatchString(guid.String()); want != got {
 					t.Errorf("want %t, got %t", want, got)
 				}
 				t.Log(guid.String())
