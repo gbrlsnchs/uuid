@@ -20,12 +20,12 @@ Full documentation [here] (work in progress).
 ## Example
 ### Generating UUIDs
 ```go
-guid, err := uuid.V4()
+guid, err := uuid.CreateV4()
 if err != nil {
 	// handle error
 }
 log.Print(guid.String())           // prints a 36-byte hex-encoded UUID
-log.Print(guid.Version().String()) // prints "V4"
+log.Print(guid.Version().String()) // prints "Version 4"
 log.Print(guid.Variant().String()) // prints "RFC 4122"
 ```
 
@@ -37,7 +37,7 @@ if err != nil {
 }
 log.Print(guid.String())           // prints "d9ab3f01-482f-425d-8a10-a24b0abfe661"
 log.Print(guid.GUID())             // prints "{d9ab3f01-482f-425d-8a10-a24b0abfe661}"
-log.Print(guid.Version().String()) // prints "V4"
+log.Print(guid.Version().String()) // prints "Version 4"
 log.Print(guid.Variant().String()) // prints "RFC 4122"
 ```
 

@@ -20,7 +20,7 @@ func TestUUID(t *testing.T) {
 		{
 			Version1,
 			func() (UUID, error) {
-				return V1()
+				return CreateV1()
 			},
 		},
 		{
@@ -28,33 +28,33 @@ func TestUUID(t *testing.T) {
 			func() (UUID, error) {
 				id := uint32(rand.Intn(int(^uint32(0))))
 				ldn := uint8(rand.Intn(int(^uint8(0))))
-				return V2(id, ldn)
+				return CreateV2(id, ldn)
 			},
 		},
 		{
 			Version3,
 			func() (UUID, error) {
-				guid, err := V4()
+				guid, err := CreateV4()
 				if err != nil {
 					return Null, err
 				}
-				return V3(guid, nil)
+				return CreateV3(guid, nil)
 			},
 		},
 		{
 			Version4,
 			func() (UUID, error) {
-				return V4()
+				return CreateV4()
 			},
 		},
 		{
 			Version5,
 			func() (UUID, error) {
-				guid, err := V4()
+				guid, err := CreateV4()
 				if err != nil {
 					return Null, err
 				}
-				return V5(guid, nil)
+				return CreateV5(guid, nil)
 			},
 		},
 	}
