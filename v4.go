@@ -5,8 +5,8 @@ import (
 	"io"
 )
 
-// CreateV4 generates a version 4 UUID.
-func CreateV4() (UUID, error) {
+// GenerateV4 generates a version 4 UUID.
+func GenerateV4() (UUID, error) {
 	var guid UUID
 	_, err := io.ReadFull(rand.Reader, guid[:])
 	if err != nil {

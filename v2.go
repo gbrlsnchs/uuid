@@ -2,13 +2,13 @@ package uuid
 
 import "encoding/binary"
 
-// CreateV2 generates a version 2 UUID.
+// GenerateV2 generates a version 2 UUID.
 //
 // It basically returns a version 1 UUID but overrides
 // the least significant 8 bits of the clock sequence by
 // the variable "ldn", a local domain name, and the least significant
 // 32 bits of the timestamp an integer identifier "id".
-func CreateV2(id uint32, ldn uint8, random bool) (UUID, error) {
+func GenerateV2(id uint32, ldn uint8, random bool) (UUID, error) {
 	guid, err := timestampUUID(random)
 	if err != nil {
 		return Null, err

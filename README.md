@@ -3,7 +3,7 @@
 [![GoDoc](https://godoc.org/github.com/gbrlsnchs/uuid?status.svg)](https://godoc.org/github.com/gbrlsnchs/uuid)
 
 ## About
-This package is a UUID (or GUID) generator for [Go]. It's still under development.
+This package is a UUID (or GUID) generator for [Go](https://golang.org). It's still under development.
 
 ### Supported versions:
 | Version | Supported          |
@@ -15,12 +15,12 @@ This package is a UUID (or GUID) generator for [Go]. It's still under developmen
 | 5       | :heavy_check_mark: |
 
 ## Usage
-Full documentation [here] (work in progress).
+Full documentation [here](https://godoc.org/github.com/gbrlsnchs/uuid).
 
 ## Example
 ### Generating UUIDs
 ```go
-guid, err := uuid.CreateV4()
+guid, err := uuid.GenerateV4()
 if err != nil {
 	// handle error
 }
@@ -46,6 +46,3 @@ log.Print(guid.Variant().String()) // prints "RFC 4122"
 - Pull Requests
 - Issues
 - Opinions
-
-[Go]: https://golang.org
-[here]: https://godoc.org/github.com/gbrlsnchs/uuid

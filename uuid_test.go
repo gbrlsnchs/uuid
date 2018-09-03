@@ -23,13 +23,13 @@ func TestUUID(t *testing.T) {
 		{
 			Version1,
 			func() (UUID, error) {
-				return CreateV1(false)
+				return GenerateV1(false)
 			},
 		},
 		{
 			Version1,
 			func() (UUID, error) {
-				return CreateV1(true)
+				return GenerateV1(true)
 			},
 		},
 		{
@@ -37,7 +37,7 @@ func TestUUID(t *testing.T) {
 			func() (UUID, error) {
 				id := uint32(rand.Intn(int(^uint32(0))))
 				ldn := uint8(rand.Intn(int(^uint8(0))))
-				return CreateV2(id, ldn, false)
+				return GenerateV2(id, ldn, false)
 			},
 		},
 		{
@@ -45,33 +45,33 @@ func TestUUID(t *testing.T) {
 			func() (UUID, error) {
 				id := uint32(rand.Intn(int(^uint32(0))))
 				ldn := uint8(rand.Intn(int(^uint8(0))))
-				return CreateV2(id, ldn, true)
+				return GenerateV2(id, ldn, true)
 			},
 		},
 		{
 			Version3,
 			func() (UUID, error) {
-				guid, err := CreateV4()
+				guid, err := GenerateV4()
 				if err != nil {
 					return Null, err
 				}
-				return CreateV3(guid, nil)
+				return GenerateV3(guid, nil)
 			},
 		},
 		{
 			Version4,
 			func() (UUID, error) {
-				return CreateV4()
+				return GenerateV4()
 			},
 		},
 		{
 			Version5,
 			func() (UUID, error) {
-				guid, err := CreateV4()
+				guid, err := GenerateV4()
 				if err != nil {
 					return Null, err
 				}
-				return CreateV5(guid, nil)
+				return GenerateV5(guid, nil)
 			},
 		},
 	}
