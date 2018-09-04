@@ -16,7 +16,7 @@ const (
 	// Version5 is the version 5 of the UUID implementation.
 	Version5
 	// versionByte is the index of the version byte.
-	versionByte = 6
+	versionByte byte = 6
 )
 
 func (v Version) String() string {

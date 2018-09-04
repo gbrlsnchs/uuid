@@ -12,7 +12,7 @@ const (
 	VariantMicrosoft Variant = 0xC0 // 110xxxxx
 	// VariantUndefined is a reserved variant for future definition (still undefined).
 	VariantUndefined Variant = 0xE0 // 111xxxxx
-	variantByte              = 8
+	variantByte      byte    = 8
 )
 
 func (v Variant) String() string {
