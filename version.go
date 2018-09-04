@@ -4,6 +4,7 @@ package uuid
 type Version byte
 
 const (
+	// VersionNone is an invalid UUID version.
 	VersionNone Version = iota
 	// Version1 is the version 1 of the UUID implementation.
 	Version1 Version = iota << 4
