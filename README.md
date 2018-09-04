@@ -6,7 +6,7 @@
 [![Minimal version](https://img.shields.io/badge/minimal%20version-go1.11%2B-5272b4.svg)](https://golang.org/doc/go1.11)
 
 ## About
-This package is a UUID (or GUID) generator for [Go](https://golang.org). It's still under development.
+This package is a UUID (or GUID) generator for [Go](https://golang.org).
 
 ### Supported versions:
 | Version | Supported          |
