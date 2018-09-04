@@ -19,10 +19,8 @@ const (
 var (
 	// Null is a null UUID that translates to a 36-byte string with only zeroes.
 	Null = UUID{}
-	// ErrInvalidUUID is the error for invalid UUID formats.
-	ErrInvalidUUID = errors.New("uuid: invalid uuid")
-	// ErrUnsupportedVersion is the error for non-existent or not implemented UUID versions.
-	ErrUnsupportedVersion = errors.New("uuid: unsupported version")
+	// ErrInvalid is the error for invalid UUID formats.
+	ErrInvalid = errors.New("uuid: invalid uuid")
 )
 
 // UUID is a 16-byte array Universally Unique IDentifier, as per the RFC 4122.
@@ -37,10 +35,10 @@ func Parse(s string) (UUID, error) {
 func ParseBytes(b []byte) (UUID, error) {
 	if len(b) != hexSize {
 		if len(b) != urnSize {
-			return Null, ErrInvalidUUID
+			return Null, ErrInvalid
 		}
 		if !bytes.HasPrefix(b, []byte(urnPrefix)) {
-			return Null, ErrInvalidUUID
+			return Null, ErrInvalid
 		}
 		b = b[urnOffset:]
 	}
@@ -114,7 +112,7 @@ func (guid UUID) String() string {
 // UnmarshalBinary implements binary unmarshaling.
 func (guid *UUID) UnmarshalBinary(b []byte) error {
 	if len(b) != byteSize {
-		return ErrInvalidUUID
+		return ErrInvalid
 	}
 	copy(guid.Bytes(), b)
 	return nil
