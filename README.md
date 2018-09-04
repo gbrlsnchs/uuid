@@ -39,9 +39,9 @@ guid, err := uuid.GenerateV4()
 if err != nil {
 	// handle error
 }
-log.Print(guid.String())           // prints a 36-byte hex-encoded UUID
-log.Print(guid.Version().String()) // prints "Version 4"
-log.Print(guid.Variant().String()) // prints "RFC 4122"
+log.Printf("guid = %v", guid)                   // prints a 36-byte hex-encoded UUID
+log.Printf("guid version = %v", guid.Version()) // prints "Version 4"
+log.Printf("guid variant = %v", guid.Variant()) // prints "RFC 4122"
 ```
 
 ### Building UUIDs from strings
