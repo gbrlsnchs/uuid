@@ -30,10 +30,11 @@ type UUID [byteSize]byte
 
 // Parse parses a UUID 36-byte string encoded in hexadecimal and converts it to a 16-byte array.
 func Parse(s string) (UUID, error) {
-	return parseBytes([]byte(s))
+	return ParseBytes([]byte(s))
 }
 
-func parseBytes(b []byte) (UUID, error) {
+// ParseBytes is the same as Parse but accepts a byte slice instead.
+func ParseBytes(b []byte) (UUID, error) {
 	if len(b) != hexSize {
 		if len(b) != urnSize {
 			return Null, ErrInvalidUUID
@@ -126,7 +127,7 @@ func (guid *UUID) UnmarshalJSON(b []byte) error {
 
 // UnmarshalText implements text unmarshaling.
 func (guid *UUID) UnmarshalText(b []byte) error {
-	u, err := parseBytes(b)
+	u, err := ParseBytes(b)
 	if err != nil {
 		return err
 	}
