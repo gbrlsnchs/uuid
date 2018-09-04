@@ -18,6 +18,18 @@ This package is a UUID (or GUID) generator for [Go](https://golang.org). It's st
 ## Usage
 Full documentation [here](https://godoc.org/github.com/gbrlsnchs/uuid).
 
+### Installing
+`go get -u github.com/gbrlsnchs/uuid`
+
+### Importing
+```go
+import (
+	// ...
+
+	"github.com/gbrlsnchs/uuid"
+)
+```
+
 ## Example
 ### Generating UUIDs
 ```go
@@ -42,8 +54,8 @@ log.Print(guid.Version().String()) // prints "Version 4"
 log.Print(guid.Variant().String()) // prints "RFC 4122"
 ```
 
-## Contribution
-### How to help:
+## Contributing
+### How to help
 - Pull Requests
 - Issues
 - Opinions
