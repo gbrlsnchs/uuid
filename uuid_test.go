@@ -91,7 +91,9 @@ func TestUUID(t *testing.T) {
 				if want, got := true, regexpMap[guid.Version()].MatchString(guid.String()); want != got {
 					t.Errorf("want %t, got %t", want, got)
 				}
-				t.Log(guid.String())
+				t.Logf("%v", guid)
+				t.Logf("version = %v", guid.Version())
+				t.Logf("variant = %v", guid.Variant())
 			}
 		})
 	}
