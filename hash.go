@@ -13,7 +13,7 @@ var (
 	NamespaceX500, _ = Parse("6ba7b814-9dad-11d1-80b4-00c04fd430c8")
 )
 
-func hashUUID(h hash.Hash, nspace UUID, data []byte, v Version) (UUID, error) {
+func hashUUID(h hash.Hash, nspace UUID, data []byte) (UUID, error) {
 	if _, err := h.Write(nspace[:]); err != nil {
 		return Null, err
 	}
@@ -23,5 +23,5 @@ func hashUUID(h hash.Hash, nspace UUID, data []byte, v Version) (UUID, error) {
 	sum := h.Sum(nil)
 	var guid UUID
 	copy(guid[:], sum)
-	return guid.withVersion(v), nil
+	return guid, nil
 }

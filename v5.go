@@ -6,5 +6,9 @@ import (
 
 // GenerateV5 generates a version 5 UUID based on a namespace UUID and additional data.
 func GenerateV5(nspace UUID, data []byte) (UUID, error) {
-	return hashUUID(sha1.New(), nspace, data, Version5)
+	guid, err := hashUUID(sha1.New(), nspace, data)
+	if err != nil {
+		return Null, err
+	}
+	return guid.withVersion(Version5), nil
 }
