@@ -23,6 +23,5 @@ func hashUUID(h hash.Hash, nspace UUID, data []byte, v Version) (UUID, error) {
 	sum := h.Sum(nil)
 	var guid UUID
 	copy(guid[:], sum)
-	guid.setVersion(v)
-	return guid, nil
+	return guid.withVersion(v), nil
 }

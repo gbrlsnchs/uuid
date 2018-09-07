@@ -6,6 +6,5 @@ func GenerateV1(random bool) (UUID, error) {
 	if err != nil {
 		return Null, err
 	}
-	guid.setVersion(Version1)
-	return guid, nil
+	return guid.withVersion(Version1), nil
 }

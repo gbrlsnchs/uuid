@@ -15,6 +15,5 @@ func GenerateV2(id uint32, ldn uint8, random bool) (UUID, error) {
 	}
 	binary.BigEndian.PutUint32(guid[:4], id)
 	guid[9] = ldn
-	guid.setVersion(Version2)
-	return guid, nil
+	return guid.withVersion(Version2), nil
 }

@@ -12,6 +12,5 @@ func GenerateV4() (UUID, error) {
 	if err != nil {
 		return Null, err
 	}
-	guid.setVersion(Version4)
-	return guid, nil
+	return guid.withVersion(Version4), nil
 }

@@ -174,10 +174,11 @@ func (guid UUID) encode(dst []byte) {
 	hex.Encode(dst[24:], guid[10:])
 }
 
-func (guid *UUID) setVersion(v Version) {
+func (guid UUID) withVersion(v Version) UUID {
 	// Clear the 4 most significant bits and set version.
 	guid[versionByte] = guid[versionByte]&0x0F | byte(v) // (byte & 00001111) | 01000000
 	// Clear the 2 most significant bits and set variant.
 	// As the RFC 4122 only takes into account 2 bits, the third most significant bit is ignored and thus not zeroed.
 	guid[variantByte] = guid[variantByte]&0x3F | byte(VariantRFC4122) // (byte & 00111111) | 10000000
+	return guid
 }
