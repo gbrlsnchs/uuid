@@ -1,10 +1,23 @@
-language: go
 os:
-  - linux
-  - osx
+  - 'linux'
+  - 'osx'
 sudo: false
-env: GO111MODULE=on
+
+language: 'go'
 go:
-  - "1.11"
-  - "tip"
-install: true
+  - '1.10'
+  - '1.11'
+  - 'tip'
+
+env:
+  - 'BIN=go'
+install:
+  - 'cd $GOPATH'
+  - 'if [ "$(go version | awk ''{print $3}'')" == "go1.10" ]; then go get -u golang.org/x/vgo && BIN=vgo; fi'
+  - 'mkdir $HOME/test'
+  - 'rsync -az $TRAVIS_BUILD_DIR/ $HOME/test/'
+  # remove the project from GOPATH to mirror real use case
+  - 'rm -rf $TRAVIS_BUILD_DIR'
+  - 'cd $HOME/test'
+script:
+  - '$BIN test -v -race -count=10'
