@@ -3,7 +3,7 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/ofys86q2b22b4rlk/branch/master?svg=true)](https://ci.appveyor.com/project/gbrlsnchs/uuid/branch/master)
 [![Sourcegraph](https://sourcegraph.com/github.com/gbrlsnchs/uuid/-/badge.svg)](https://sourcegraph.com/github.com/gbrlsnchs/uuid?badge)
 [![GoDoc](https://godoc.org/github.com/gbrlsnchs/uuid?status.svg)](https://godoc.org/github.com/gbrlsnchs/uuid)
-[![Minimal version](https://img.shields.io/badge/minimal%20version-go1.11%2B-5272b4.svg)](https://golang.org/doc/go1.11)
+[![Minimal version](https://img.shields.io/badge/minimal%20version-go1.10%2B-5272b4.svg)](https://golang.org/doc/go1.10)
 
 ## About
 This package is a UUID (or GUID) generator for [Go](https://golang.org).
@@ -21,6 +21,9 @@ This package is a UUID (or GUID) generator for [Go](https://golang.org).
 Full documentation [here](https://godoc.org/github.com/gbrlsnchs/uuid).
 
 ### Installing
+#### Go 1.10
+`vgo get -u github.com/gbrlsnchs/uuid`
+#### Go 1.11 or after
 `go get -u github.com/gbrlsnchs/uuid`
 
 ### Importing
@@ -58,6 +61,5 @@ log.Print(guid.Variant().String()) // prints "RFC 4122"
 
 ## Contributing
 ### How to help
-- Pull Requests
-- Issues
-- Opinions
+- For bugs and opinions, please [open an issue](https://github.com/gbrlsnchs/uuid/issues/new)
+- For pushing changes, please [open a pull request](https://github.com/gbrlsnchs/uuid/compare)
