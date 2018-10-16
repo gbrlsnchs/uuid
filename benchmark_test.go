@@ -38,7 +38,7 @@ func BenchmarkVariant(b *testing.B) {
 
 func BenchmarkParse(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		if _, err := Parse("d9ab3f01-482f-425d-8a10-a24b0abfe661"); err != nil {
+		if _, err := Parse([]byte("d9ab3f01-482f-425d-8a10-a24b0abfe661")); err != nil {
 			b.Error(err)
 		}
 	}
