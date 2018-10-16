@@ -17,3 +17,8 @@ func GenerateV2(id uint32, ldn uint8, random bool) (UUID, error) {
 	guid[9] = ldn
 	return guid.withVersion(Version2), nil
 }
+
+// V2 returns a version 2 UUID or panics otherwise.
+func V2(id uint32, ldn uint8, random bool) UUID {
+	return uuidOrPanic(GenerateV2(id, ldn, random))
+}

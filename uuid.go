@@ -1,12 +1,12 @@
 package uuid
 
 import (
-	"bytes"
 	"database/sql/driver"
 	"encoding/hex"
 	"encoding/json"
 	"errors"
 	"fmt"
+	"strings"
 )
 
 const (
@@ -29,17 +29,18 @@ var (
 type UUID [byteSize]byte
 
 // Parse parses a UUID 36-byte slice encoded in hexadecimal and converts it to a 16-byte array.
-func Parse(b []byte) (UUID, error) {
-	if len(b) != hexSize {
-		if len(b) != urnSize {
+func Parse(s string) (UUID, error) {
+	if len(s) != hexSize {
+		if len(s) != urnSize {
 			return Null, ErrInvalid
 		}
-		if !bytes.HasPrefix(b, []byte(urnPrefix)) {
+		if !strings.HasPrefix(s, urnPrefix) {
 			return Null, ErrInvalid
 		}
-		b = b[urnOffset:]
+		s = s[urnOffset:]
 	}
 	var (
+		b    = []byte(s)
 		guid UUID
 		err  error
 	)
@@ -59,6 +60,13 @@ func Parse(b []byte) (UUID, error) {
 		return Null, err
 	}
 	return guid, nil
+}
+
+func uuidOrPanic(guid UUID, err error) UUID {
+	if err != nil {
+		panic(err)
+	}
+	return guid
 }
 
 // Bytes returns the UUID as a 16-byte slice.
@@ -139,7 +147,7 @@ func (guid *UUID) UnmarshalJSON(b []byte) error {
 
 // UnmarshalText implements text unmarshaling.
 func (guid *UUID) UnmarshalText(b []byte) error {
-	u, err := Parse(b)
+	u, err := Parse(unsafeStr(&b))
 	if err != nil {
 		return err
 	}

@@ -1,14 +1,17 @@
 package uuid_test
 
 import (
-	"math/rand"
+	"crypto/rand"
+	prng "math/rand"
 	"regexp"
 	"testing"
+	"time"
 
 	. "github.com/gbrlsnchs/uuid"
 )
 
 func TestUUID(t *testing.T) {
+	prng.Seed(time.Now().Unix())
 	regexpMap := map[Version]*regexp.Regexp{
 		Version1: regexp.MustCompile("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-1[0-9a-fA-F]{3}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"),
 		Version2: regexp.MustCompile("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-2[0-9a-fA-F]{3}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"),
@@ -35,23 +38,23 @@ func TestUUID(t *testing.T) {
 		{
 			Version2,
 			func() (UUID, error) {
-				id := uint32(rand.Intn(int(^uint32(0))))
-				ldn := uint8(rand.Intn(int(^uint8(0))))
+				id := uint32(prng.Intn(int(^uint32(0))))
+				ldn := uint8(prng.Intn(int(^uint8(0))))
 				return GenerateV2(id, ldn, false)
 			},
 		},
 		{
 			Version2,
 			func() (UUID, error) {
-				id := uint32(rand.Intn(int(^uint32(0))))
-				ldn := uint8(rand.Intn(int(^uint8(0))))
+				id := uint32(prng.Intn(int(^uint32(0))))
+				ldn := uint8(prng.Intn(int(^uint8(0))))
 				return GenerateV2(id, ldn, true)
 			},
 		},
 		{
 			Version3,
 			func() (UUID, error) {
-				guid, err := GenerateV4()
+				guid, err := GenerateV4(rand.Reader)
 				if err != nil {
 					return Null, err
 				}
@@ -61,13 +64,13 @@ func TestUUID(t *testing.T) {
 		{
 			Version4,
 			func() (UUID, error) {
-				return GenerateV4()
+				return GenerateV4(rand.Reader)
 			},
 		},
 		{
 			Version5,
 			func() (UUID, error) {
-				guid, err := GenerateV4()
+				guid, err := GenerateV4(rand.Reader)
 				if err != nil {
 					return Null, err
 				}

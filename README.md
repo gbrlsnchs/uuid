@@ -30,6 +30,7 @@ Full documentation [here](https://godoc.org/github.com/gbrlsnchs/uuid).
 ```go
 import (
 	// ...
+	"crypto/rand" // needed in order to generate V4 UUIDs
 
 	"github.com/gbrlsnchs/uuid"
 )
@@ -38,10 +39,7 @@ import (
 ## Example
 ### Generating UUIDs
 ```go
-guid, err := uuid.GenerateV4()
-if err != nil {
-	// handle error
-}
+guid := uuid.V4(rand.Reader)                    // panics if there's an error
 log.Printf("guid = %v", guid)                   // prints a 36-byte hex-encoded UUID
 log.Printf("guid version = %v", guid.Version()) // prints "Version 4"
 log.Printf("guid variant = %v", guid.Variant()) // prints "RFC 4122"
