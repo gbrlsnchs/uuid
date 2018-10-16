@@ -95,3 +95,46 @@ func TestUUID(t *testing.T) {
 		})
 	}
 }
+
+func TestUUIDScan(t *testing.T) {
+	testCases := []struct {
+		guid UUID
+	}{
+		{Null},
+		{NamespaceDNS},
+		{NamespaceURL},
+		{NamespaceOID},
+		{NamespaceX500},
+	}
+	for _, tc := range testCases {
+		t.Run(tc.guid.String(), func(t *testing.T) {
+			// Test it as a 16-byte array.
+			var guid UUID
+			if want, got := (error)(nil), guid.Scan(tc.guid.Bytes()); want != got {
+				t.Errorf("want %v, got %v", want, got)
+			}
+			if want, got := tc.guid, guid; want != got {
+				t.Errorf("want %v, got %v", want, got)
+			}
+
+			// Test it as a 36-byte array encoded to hex.
+			s := tc.guid.String()
+			guid = Null
+			if want, got := (error)(nil), guid.Scan([]byte(s)); want != got {
+				t.Errorf("want %v, got %v", want, got)
+			}
+			if want, got := tc.guid, guid; want != got {
+				t.Errorf("want %v, got %v", want, got)
+			}
+
+			// Test it as a 36-byte string encoded to hex.
+			guid = Null
+			if want, got := (error)(nil), guid.Scan(s); want != got {
+				t.Errorf("want %v, got %v", want, got)
+			}
+			if want, got := tc.guid, guid; want != got {
+				t.Errorf("want %v, got %v", want, got)
+			}
+		})
+	}
+}

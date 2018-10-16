@@ -2,9 +2,11 @@ package uuid
 
 import (
 	"bytes"
+	"database/sql/driver"
 	"encoding/hex"
 	"encoding/json"
 	"errors"
+	"fmt"
 )
 
 const (
@@ -98,6 +100,23 @@ func (guid UUID) MarshalText() ([]byte, error) {
 	return b, nil // 36-byte hex-encoded slice
 }
 
+// Scan implements scanning a UUID from an SQL database.
+func (guid *UUID) Scan(v interface{}) error {
+	switch vv := v.(type) {
+	case []byte:
+		if len(vv) == byteSize { // byte array in binary form
+			copy(guid[:], vv)
+			break
+		}
+		return guid.UnmarshalText(vv)
+	case string:
+		return guid.UnmarshalText([]byte(vv))
+	default:
+		return fmt.Errorf("uuid: cannot scan type %T into UUID", v)
+	}
+	return nil
+}
+
 // String converts the 16-byte UUID to a 36-byte string encoded in hexadecimal.
 func (guid UUID) String() string {
 	b, _ := guid.MarshalText()
@@ -135,6 +154,11 @@ func (guid UUID) URN() string {
 	copy(b, "urn:uuid:")
 	guid.encode(b[urnOffset:])
 	return unsafeStr(&b)
+}
+
+// Value implements saving the UUID as a 36-byte string encoded to hex to an SQL database.
+func (guid UUID) Value() (driver.Value, error) {
+	return driver.String.ConvertValue(guid.String())
 }
 
 // Variant parses the variant from the UUID.
