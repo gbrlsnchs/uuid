@@ -1,6 +1,7 @@
 package uuid_test
 
 import (
+	"bytes"
 	"crypto/rand"
 	prng "math/rand"
 	"regexp"
@@ -99,6 +100,114 @@ func TestUUID(t *testing.T) {
 	}
 }
 
+func TestUUIDGUID(t *testing.T) {
+	testCases := []struct {
+		guid UUID
+	}{
+		{Null},
+		{NamespaceDNS},
+		{NamespaceURL},
+		{NamespaceOID},
+		{NamespaceX500},
+	}
+	for _, tc := range testCases {
+		t.Run(tc.guid.GUID(), func(t *testing.T) {
+			if want, got := "{"+tc.guid.String()+"}", tc.guid.GUID(); want != got {
+				t.Errorf("want %s, got %s", want, got)
+			}
+		})
+	}
+}
+
+func TestUUIDMarshal(t *testing.T) {
+	testCases := []struct {
+		guid           UUID
+		expectedBinary []byte
+		expectedJSON   string
+		expectedText   string
+	}{
+		{Null, nil, "", ""},
+		{NamespaceDNS, NamespaceDNS[:], NamespaceDNS.String(), NamespaceDNS.String()},
+		{NamespaceURL, NamespaceURL[:], NamespaceURL.String(), NamespaceURL.String()},
+		{NamespaceOID, NamespaceOID[:], NamespaceOID.String(), NamespaceOID.String()},
+		{NamespaceX500, NamespaceX500[:], NamespaceX500.String(), NamespaceX500.String()},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.guid.String(), func(t *testing.T) {
+			var (
+				b   []byte
+				err error
+			)
+
+			b, err = tc.guid.MarshalBinary()
+			if want, got := (error)(nil), err; want != got {
+				t.Errorf("want %v, got %v", want, got)
+			}
+			if want, got := tc.expectedBinary, b; !bytes.Equal(want, got) {
+				t.Errorf("want %b, got %b", want, got)
+			}
+
+			b, err = tc.guid.MarshalJSON()
+			if want, got := (error)(nil), err; want != got {
+				t.Errorf("want %v, got %v", want, got)
+			}
+			if want, got := tc.expectedJSON, b; want != string(got) {
+				t.Errorf("want %s, got %s", want, got)
+			}
+
+			b, err = tc.guid.MarshalText()
+			if want, got := (error)(nil), err; want != got {
+				t.Errorf("want %v, got %v", want, got)
+			}
+			if want, got := tc.expectedText, b; want != string(got) {
+				t.Errorf("want %s, got %s", want, got)
+			}
+		})
+	}
+}
+
+func TestUUIDUnmarshal(t *testing.T) {
+	testCases := []struct {
+		guid UUID
+	}{
+		{Null},
+		{NamespaceDNS},
+		{NamespaceURL},
+		{NamespaceOID},
+		{NamespaceX500},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.guid.String(), func(t *testing.T) {
+			var guid2 UUID
+			if want, got := (error)(nil), guid2.UnmarshalBinary(tc.guid[:]); want != got {
+				t.Errorf("want %v, got %v", want, got)
+			}
+			if want, got := tc.guid, guid2; want != got {
+				t.Errorf("want %v, got %v", want, got)
+			}
+
+			b := []byte(tc.guid.String())
+			guid2 = Null
+			if want, got := (error)(nil), guid2.UnmarshalJSON(b); want != got {
+				t.Errorf("want %v, got %v", want, got)
+			}
+			if want, got := tc.guid, guid2; want != got {
+				t.Errorf("want %v, got %v", want, got)
+			}
+
+			guid2 = Null
+			if want, got := (error)(nil), guid2.UnmarshalText(b); want != got {
+				t.Errorf("want %v, got %v", want, got)
+			}
+			if want, got := tc.guid, guid2; want != got {
+				t.Errorf("want %v, got %v", want, got)
+			}
+		})
+	}
+}
+
 func TestUUIDScan(t *testing.T) {
 	testCases := []struct {
 		guid UUID
@@ -113,7 +222,7 @@ func TestUUIDScan(t *testing.T) {
 		t.Run(tc.guid.String(), func(t *testing.T) {
 			// Test it as a 16-byte array.
 			var guid UUID
-			if want, got := (error)(nil), guid.Scan(tc.guid.Bytes()); want != got {
+			if want, got := (error)(nil), guid.Scan(tc.guid[:]); want != got {
 				t.Errorf("want %v, got %v", want, got)
 			}
 			if want, got := tc.guid, guid; want != got {
