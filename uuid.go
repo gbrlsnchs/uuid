@@ -3,7 +3,6 @@ package uuid
 import (
 	"database/sql/driver"
 	"encoding/hex"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"strings"
@@ -69,11 +68,6 @@ func uuidOrPanic(guid UUID, err error) UUID {
 	return guid
 }
 
-// Bytes returns the UUID as a 16-byte slice.
-func (guid UUID) Bytes() []byte {
-	return guid[:]
-}
-
 // GUID returns a 36-byte string with surrounding curly braces.
 func (guid UUID) GUID() string {
 	var microsoft [guidSize]byte
@@ -85,27 +79,30 @@ func (guid UUID) GUID() string {
 	return unsafeStr(&b)
 }
 
-// IsNull returns whether the UUID is a null UUID.
-func (guid UUID) IsNull() bool {
+// IsZero returns whether the UUID is a null UUID.
+func (guid UUID) IsZero() bool {
 	return guid == Null
 }
 
 // MarshalBinary implements binary marshaling.
 func (guid UUID) MarshalBinary() ([]byte, error) {
-	return guid.Bytes(), nil // 16-byte array
+	if guid.IsZero() {
+		return nil, nil
+	}
+	return guid[:], nil // 16-byte array
 }
 
 // MarshalJSON implements JSON marshaling.
 func (guid UUID) MarshalJSON() ([]byte, error) {
-	return json.Marshal(guid.String()) // 36-byte hex-encoded string
+	return guid.MarshalText() // 36-byte hex-encoded string
 }
 
 // MarshalText implements text marshaling.
 func (guid UUID) MarshalText() ([]byte, error) {
-	var xid [hexSize]byte
-	b := xid[:]
-	guid.encode(b)
-	return b, nil // 36-byte hex-encoded slice
+	if guid.IsZero() {
+		return nil, nil
+	}
+	return guid.hex(), nil // 36-byte hex-encoded slice
 }
 
 // Scan implements scanning a UUID from an SQL database.
@@ -127,7 +124,7 @@ func (guid *UUID) Scan(v interface{}) error {
 
 // String converts the 16-byte UUID to a 36-byte string encoded in hexadecimal.
 func (guid UUID) String() string {
-	b, _ := guid.MarshalText()
+	b := guid.hex()
 	return unsafeStr(&b)
 }
 
@@ -136,7 +133,7 @@ func (guid *UUID) UnmarshalBinary(b []byte) error {
 	if len(b) != byteSize {
 		return ErrInvalid
 	}
-	copy(guid.Bytes(), b)
+	copy(guid[:], b)
 	return nil
 }
 
@@ -159,7 +156,7 @@ func (guid *UUID) UnmarshalText(b []byte) error {
 func (guid UUID) URN() string {
 	var urn [urnSize]byte
 	b := urn[:]
-	copy(b, "urn:uuid:")
+	copy(b, urnPrefix)
 	guid.encode(b[urnOffset:])
 	return unsafeStr(&b)
 }
@@ -199,6 +196,13 @@ func (guid UUID) encode(dst []byte) {
 	hex.Encode(dst[19:23], guid[8:10])
 	dst[23] = '-'
 	hex.Encode(dst[24:], guid[10:])
+}
+
+func (guid UUID) hex() []byte {
+	var xid [hexSize]byte
+	b := xid[:]
+	guid.encode(b)
+	return b
 }
 
 func (guid UUID) withVersion(v Version) UUID {
