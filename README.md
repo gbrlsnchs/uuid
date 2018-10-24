@@ -1,9 +1,8 @@
 # uuid (Universally Unique IDentifier generator for Go)
-[![Build status](https://travis-ci.org/gbrlsnchs/uuid.svg?branch=master)](https://travis-ci.org/gbrlsnchs/uuid)
-[![Build status](https://ci.appveyor.com/api/projects/status/ofys86q2b22b4rlk/branch/master?svg=true)](https://ci.appveyor.com/project/gbrlsnchs/uuid/branch/master)
+[![Build Status](https://travis-ci.org/gbrlsnchs/uuid.svg?branch=master)](https://travis-ci.org/gbrlsnchs/uuid)
 [![Sourcegraph](https://sourcegraph.com/github.com/gbrlsnchs/uuid/-/badge.svg)](https://sourcegraph.com/github.com/gbrlsnchs/uuid?badge)
 [![GoDoc](https://godoc.org/github.com/gbrlsnchs/uuid?status.svg)](https://godoc.org/github.com/gbrlsnchs/uuid)
-[![Minimal version](https://img.shields.io/badge/minimal%20version-go1.10%2B-5272b4.svg)](https://golang.org/doc/go1.10)
+[![Minimal Version](https://img.shields.io/badge/minimal%20version-go1.10%2B-5272b4.svg)](https://golang.org/doc/go1.10)
 
 ## About
 This package is a UUID (or GUID) generator for [Go](https://golang.org).
